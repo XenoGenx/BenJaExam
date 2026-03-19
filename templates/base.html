@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BenJaMockExam{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #065C3D 0%, #0a7a52 50%, #C8002E 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #065C3D 0%, #0a7a52 50%, #C8002E 100%);
+            color: white;
+            padding: 30px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border-bottom: 5px solid #FFD700;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+        
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 5px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        header p {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.98);
+            font-weight: 500;
+        }
+        
+        nav {
+            background: linear-gradient(90deg, #065C3D 0%, #0a7a52 100%);
+            padding: 15px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 15px;
+            position: relative;
+        }
+        
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: #FFD700;
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover {
+            background-color: rgba(200, 0, 46, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(200, 0, 46, 0.4);
+        }
+        
+        nav a:hover::before {
+            width: 100%;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .alerts {
+            margin-bottom: 25px;
+        }
+        
+        .alert {
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            animation: slideIn 0.4s ease-in;
+            border-left: 5px solid;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border-left-color: #28a745;
+        }
+        
+        .alert-error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-25px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-top: 5px solid #C8002E;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(6, 92, 61, 0.18);
+        }
+        
+        .card:hover::before {
+            left: 100%;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #C8002E;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 2px solid #C8002E;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(200, 0, 46, 0.25);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn:hover {
+            background-color: #9a0023;
+            border-color: #9a0023;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(200, 0, 46, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: #065C3D;
+            border-color: #065C3D;
+            box-shadow: 0 4px 12px rgba(6, 92, 61, 0.25);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #043d2a;
+            border-color: #043d2a;
+            box-shadow: 0 6px 20px rgba(6, 92, 61, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .btn-success {
+            background-color: #059669;
+            border-color: #059669;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+        }
+        
+        .btn-success:hover {
+            background-color: #047857;
+            border-color: #047857;
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .btn-danger {
+            background-color: #C8002E;
+            border-color: #C8002E;
+        }
+        
+        .btn-danger:hover {
+            background-color: #9a0023;
+            border-color: #9a0023;
+            box-shadow: 0 6px 20px rgba(200, 0, 46, 0.4);
+        }
+        
+        footer {
+            background: linear-gradient(90deg, #065C3D 0%, #0a7a52 100%);
+            color: white;
+            text-align: center;
+            padding: 25px 20px;
+            margin-top: 50px;
+            border-top: 5px solid #C8002E;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        h2 {
+            color: #065C3D;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        h3 {
+            color: #065C3D;
+            margin-bottom: 15px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid #065C3D;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #065C3D;
+            font-size: 15px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="file"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="email"]:focus,
+        input[type="file"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #C8002E;
+            box-shadow: 0 0 0 4px rgba(200, 0, 46, 0.12);
+            background: white;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        
+        .class-card {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .class-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .class-card:hover::before {
+            left: 100%;
+        }
+        
+        .exam-item {
+            border-left: 5px solid #C8002E;
+            padding-left: 18px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .exam-item:hover {
+            padding-left: 22px;
+            box-shadow: 0 4px 12px rgba(200, 0, 46, 0.15);
+        }
+        
+        .meta {
+            color: #333;
+            font-size: 14px;
+            margin-top: 12px;
+            font-weight: 500;
+            background: white;
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #065C3D;
+        }
+        
+        .meta p {
+            margin-bottom: 10px;
+        }
+        
+        .meta p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .comment-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #065C3D;
+        }
+        
+        .comment-item {
+            background: linear-gradient(135deg, #f0f8f5 0%, #ffffff 100%);
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            border-left: 5px solid #065C3D;
+            box-shadow: 0 3px 10px rgba(6, 92, 61, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .comment-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(6, 92, 61, 0.15);
+        }
+        
+        .comment-author {
+            font-weight: 700;
+            color: #C8002E;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+        
+        .comment-date {
+            color: #999;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .comment-content {
+            margin-top: 12px;
+            color: #555;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .table th {
+            background: linear-gradient(90deg, #065C3D 0%, #0a7a52 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 15px;
+        }
+        
+        .table td {
+            padding: 14px 15px;
+            border-bottom: 1px solid #e8e8e8;
+            color: #555;
+        }
+        
+        .table tr:hover {
+            background: linear-gradient(90deg, #f0f8f5 0%, #ffffff 100%);
+        }
+        
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background-color: #e9ecef;
+            color: #495057;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+        
+        .badge-primary {
+            background: linear-gradient(135deg, #cfe2ff 0%, #b6e3ff 100%);
+            color: #C8002E;
+            font-weight: 700;
+        }
+        
+        .badge-success {
+            background: linear-gradient(135deg, #d1e7dd 0%, #badbcc 100%);
+            color: #0f5132;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+            
+            header h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 22px;
+            }
+            
+            .container {
+                margin: 25px auto;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+            <span style="font-size: 48px;">🎓</span>
+            <div>
+                <h1>BenJaMockExam</h1>
+                <p>Benjama maharat School Mock exam Hub</p>
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="/">🏠 หน้าแรก</a></li>
+            {% if session.get('is_admin') %}
+                <li><a href="/admin/dashboard">⚙️ แดชบอร์ดแอดมิน</a></li>
+                <li><a href="/upload">📤 อัปโหลดข้อสอบ</a></li>
+            {% endif %}
+            <li><a href="/">📚 ดูข้อสอบ</a></li>
+            <li style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
+                <span style="color: white; font-weight: 500;">
+                    👤 {{ session.get('user_name', 'ผู้ใช้') }}
+                    {% if session.get('is_admin') %}
+                        <span style="background: #FFD700; color: #065C3D; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 700;">ADMIN</span>
+                    {% endif %}
+                </span>
+                <a href="/logout" style="background-color: #C8002E;">🚪 ออกจากระบบ</a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alerts">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+    
+    <footer>
+        <p>&copy; 2026 BenJaMockExam | Bm113Tub17 🎓</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}{{ exam.title }} - BenJaMockExam{% endblock %}
+
+{% block content %}
+    <div style="margin-bottom: 20px;">
+        <a href="{{ url_for('select_class', class_id=exam.class_type_id) }}" style="color: #065C3D; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; background: white; border-radius: 8px; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); border-left: 4px solid #065C3D;">← ย้อนกลับ</a>
+    </div>
+    
+    <div class="card" style="background: linear-gradient(135deg, #065C3D10, #C8002E10); border-left: 5px solid #065C3D; border-top: none;">
+        <h2 style="color: #b83d5a; margin-bottom: 16px;">{{ exam.title }}</h2>
+        <div class="meta">
+            <p>📅 ปีการศึกษา: <strong>{{ exam.year }}</strong></p>
+            <p>🏫 ประเภท: <strong>{{ exam.class_type.name }}</strong></p>
+            {% if exam.program %}
+                <p>⭐ โปรแกรม: <span class="badge badge-primary">{{ exam.program.name }}</span></p>
+            {% endif %}
+            <p>📤 อัปโหลดเมื่อ: {{ exam.upload_date.strftime('%d/%m/%Y เวลา %H:%M') }}</p>
+        </div>
+        
+        {% if exam.description %}
+            <div style="margin-top: 15px; padding: 15px; background: rgba(255, 255, 255, 0.5); border-radius: 4px;">
+                <strong>รายละเอียด:</strong>
+                <p style="margin-top: 10px; white-space: pre-wrap;">{{ exam.description }}</p>
+            </div>
+        {% endif %}
+        
+        <div style="margin-top: 20px;">
+            <a href="{{ url_for('download_exam', exam_id=exam.id) }}" class="btn btn-success">⬇️ ดาวน์โหลดข้อสอบ</a>
+            {% if exam.answer_filepath %}
+                <a href="{{ url_for('download_answer', exam_id=exam.id) }}" class="btn btn-success">✏️ ดาวน์โหลดเฉลย</a>
+            {% else %}
+                <button type="button" class="btn" style="background-color: #ccc; cursor: not-allowed;">✏️ ไม่มีเฉลย</button>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Comments Section -->
+    <div class="comment-section">
+        <h3 style="color: #efefef;">💬 ความเห็นและการเรียนรู้ร่วมกัน ({{ comments|length }} ความเห็น)</h3>
+        
+        <!-- Comment Form -->
+        <div class="card" style="background: #f0f8f5; margin-bottom: 25px; border-left: 4px solid #065C3D;">
+            <h4 style="margin-bottom: 15px; color: #065C3D;">ระบบความเห็นของคุณ (ชื่อ: <span style="color: #C8002E; font-weight: bold;">{{ session.get('user_name', 'ไม่ระบุชื่อ') }}</span>)</h4>
+            <form method="POST" action="{{ url_for('add_comment', exam_id=exam.id) }}">
+                <div class="form-group">
+                    <label for="content">💭 ความเห็นของคุณ</label>
+                    <textarea id="content" name="content" required placeholder="แสดงความเห็น แนวทางการแก้โจทย์ หรือข้อมูลที่เป็นประโยชน์..." maxlength="2000"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-success">✅ โพสต์ความเห็น</button>
+            </form>
+        </div>
+        
+        <!-- Comments List -->
+        {% if comments %}
+            <div>
+                {% for comment in comments %}
+                    <div class="comment-item">
+                        <div class="comment-author">👤 {{ comment.author }}</div>
+                        <div class="comment-date">⏰ {{ comment.created_at.strftime('%d/%m/%Y เวลา %H:%M') }}</div>
+                        <div class="comment-content">{{ comment.content }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="color: #999; text-align: center; padding: 30px;">ยังไม่มีความเห็น เป็นคนแรกที่แสดงความเห็นของคุณ!</p>
+        {% endif %}
+    </div>
+{% endblock %}

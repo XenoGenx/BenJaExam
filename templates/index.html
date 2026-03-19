@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}หน้าแรก - BenJaMockExam{% endblock %}
+
+{% block content %}
+    <h2 style="color: #d0c7c9; text-align: center; margin-bottom: 10px;">🎓 ยินดีต้อนรับสู่ BenJaMockExam</h2>
+    <p style="color: #050f0b; text-align: center; margin-bottom: 35px; font-size: 16px; font-weight: 500;">เลือกประเภทห้องเรียนของคุณเพื่อเริ่มสำรวจข้อสอบล่าสุด</p>
+    
+    <div class="grid">
+        {% for class_type in class_types %}
+            <a href="{{ url_for('select_class', class_id=class_type.id) }}" style="text-decoration: none; display: block;">
+                <div class="card class-card" style="text-align: center; border-top: 5px solid {% if class_type.name == 'ห้องพิเศษ' %}#C8002E{% else %}#065C3D{% endif %};">
+                    <div style="font-size: 56px; margin-bottom: 15px;">
+                        {% if class_type.name == 'ห้องพิเศษ' %}
+                            ⭐
+                        {% else %}
+                            📚
+                        {% endif %}
+                    </div>
+                    <h3 style="color: {% if class_type.name == 'ห้องเรียนพิเศษ' %}#C8002E{% else %}#065C3D{% endif %}; margin-bottom: 12px; font-size: 24px;">{{ class_type.name }}</h3>
+                    <p style="color: #666; font-size: 15px; margin-bottom: 15px; line-height: 1.6;">{{ class_type.description }}</p>
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #f0f0f0;">
+                        {% if class_type.name == 'ห้องพิเศษ' %}
+                            <p style="color: #C8002E; font-size: 13px; font-weight: 600; margin-bottom: 12px;">📌 โปรแกรม: EEP, SMTE, YSP, AP, EP</p>
+                        {% else %}
+                            <p style="color: #065C3D; font-size: 13px; font-weight: 600; margin-bottom: 12px;">📖 สำหรับห้องเรียนทั่วไป</p>
+                        {% endif %}
+                        <span class="btn" style="display: inline-block; margin-top: 10px; margin: 0;">เข้าดู →</span>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    
+    <div class="card" style="margin-top: 50px; background: linear-gradient(135deg, #065C3D10, #C8002E10); border-left: 5px solid #065C3D; border-top: none;">
+        <h3 style="color: #ebebeb; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 24px;">📋</span> เกี่ยวกับเว็บไซต์นี้
+        </h3>
+        <p style="color: #a8a3a3; line-height: 1.8; margin-bottom: 15px;">
+            เว็บไซต์นี้เป็นแหล่งรวมข้อสอบจําลองเข้าโรงเรียนเบ็ญจะมะมหาราชจากหลายปี 
+            เพื่อช่วยให้นักเรียนสามารถค้นหา ศึกษา และแลกเปลี่ยนประสบการณ์การเรียนรู้ได้อย่างมีประสิทธิภาพครับ/ค่ะ
+        </p>
+        <div style="background: white; padding: 16px; border-radius: 8px; margin-top: 15px;">
+            <p style="color: #065C3D; font-weight: 600; margin-bottom: 12px;">🔥 จุดประสงค์หลัก:</p>
+            <ul style="margin-left: 20px; color: #555; line-height: 2;">
+                <li>📥 ใช้เพื่อฝึกฝนตนเอง</li>
+                <li>📤 ฝึกฝนและทําข้อสอบจําลอง</li>
+                <li>💬 แสดงความคิดเห็นและแนวทางการแก้ปัญหา</li>
+                <li>⭐ เลือกโปรแกรม (EEP, SMTE, YSP, AP, EP)</li>
+                <li>📓 ดาวน์โหลดข้อสอบและเฉลยอย่างไม่จำกัด</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

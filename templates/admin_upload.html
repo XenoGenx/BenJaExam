@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+
+{% block title %}อัปโหลดข้อสอบ - แอดมิน{% endblock %}
+
+{% block extra_css %}
+<style>
+    .upload-section {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .upload-header {
+        background: linear-gradient(135deg, #065C3D 0%, #0a7a52 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 6px 20px rgba(6, 92, 61, 0.2);
+    }
+
+    .upload-header h1 {
+        font-size: 42px;
+        margin-bottom: 10px;
+        font-weight: 900;
+    }
+
+    .upload-header p {
+        font-size: 16px;
+        opacity: 0.95;
+    }
+
+    .upload-form {
+        background: white;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group label {
+        margin-bottom: 10px;
+        color: #065C3D;
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 14px 16px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 15px;
+        font-family: inherit;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #C8002E;
+        box-shadow: 0 0 0 4px rgba(200, 0, 46, 0.12);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: #ccc;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .file-input-wrapper {
+        position: relative;
+    }
+
+    .file-input-label {
+        display: inline-block;
+        padding: 14px 24px;
+        background: linear-gradient(90deg, #065C3D 0%, #0a7a52 100%);
+        color: white;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(6, 92, 61, 0.25);
+    }
+
+    .file-input-label:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(6, 92, 61, 0.35);
+    }
+
+    .file-input-wrapper input[type="file"] {
+        display: none;
+    }
+
+    .file-name {
+        display: block;
+        margin-top: 10px;
+        font-size: 13px;
+        color: #888;
+    }
+
+    .form-section-title {
+        font-size: 18px;
+        font-weight: 800;
+        color: #065C3D;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #C8002E;
+    }
+
+    .required-note {
+        color: #C8002E;
+        font-weight: 700;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 16px 24px;
+        background: linear-gradient(90deg, #C8002E 0%, #a00023 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(200, 0, 46, 0.3);
+        margin-top: 30px;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(200, 0, 46, 0.4);
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    .info-box {
+        background: #E8F5E9;
+        border-left: 5px solid #065C3D;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        color: #065C3D;
+    }
+
+    .info-box h4 {
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+
+    .info-box ul {
+        margin-left: 20px;
+        font-size: 14px;
+    }
+
+    .info-box li {
+        margin-bottom: 5px;
+    }
+
+    @media (max-width: 768px) {
+        .upload-form {
+            padding: 25px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .upload-header {
+            padding: 30px;
+        }
+
+        .upload-header h1 {
+            font-size: 32px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="upload-section">
+    <div class="upload-header">
+        <h1>📤 อัปโหลดข้อสอบใหม่</h1>
+        <p>เพิ่มข้อสอบให้กับระบบเพื่อให้ผู้ใช้งานสามารถเข้าถึงได้</p>
+    </div>
+
+    <div class="info-box">
+        <h4>ℹ️ ข้อมูลที่สำคัญ</h4>
+        <ul>
+            <li><strong>ไฟล์ที่รองรับ:</strong> PDF, DOC, DOCX, XLS, XLSX, TXT, ZIP, RAR</li>
+            <li><strong>ขนาดไฟล์สูงสุด:</strong> 50 MB</li>
+            <li><strong>ข้อมูลจำเป็น:</strong> ชื่อข้อสอบ, ปี, ห้องเรียน</li>
+        </ul>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="upload-form">
+        <!-- ข้อมูลพื้นฐาน -->
+        <div class="form-section-title">📝 ข้อมูลพื้นฐาน</div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="title">ชื่อข้อสอบ <span class="required-note">*</span></label>
+                <input type="text" id="title" name="title" required placeholder="เช่น: ข้อสอบเข้าม.1 ปีการศึกษา 2566">
+            </div>
+
+            <div class="form-group">
+                <label for="year">ปี <span class="required-note">*</span></label>
+                <select id="year" name="year" required>
+                    <option value="">-- เลือกปีการศึกษา --</option>
+                    {% for year in years %}
+                        <option value="{{ year }}">{{ year + 543 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="class_type_id">ห้องเรียน <span class="required-note">*</span></label>
+                <select id="class_type_id" name="class_type_id" required>
+                    <option value="">-- เลือกประเภทห้องเรียน --</option>
+                    {% for class_type in class_types %}
+                        <option value="{{ class_type.id }}">{{ class_type.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="program_id">โปรแกรม (สำหรับห้องพิเศษ)</label>
+                <select id="program_id" name="program_id">
+                    <option value="">-- ไม่เลือกโปรแกรม --</option>
+                    {% for program in programs %}
+                        <option value="{{ program.id }}">{{ program.name }} - {{ program.description }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <!-- ไฟล์ -->
+        <div class="form-section-title" style="margin-top: 30px;">📁 ไฟล์ข้อสอบ</div>
+
+        <div class="form-group">
+            <label>ไฟล์ข้อสอบ <span class="required-note">*</span></label>
+            <div class="file-input-wrapper">
+                <label for="file" class="file-input-label">
+                    📂 เลือกไฟล์ข้อสอบ
+                </label>
+                <input type="file" id="file" name="file" required accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar">
+                <span class="file-name" id="file-name"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>ไฟล์เฉลย (ทางเลือก)</label>
+            <div class="file-input-wrapper">
+                <label for="answer_file" class="file-input-label" style="background: linear-gradient(90deg, #FFB300 0%, #FF9800 100%);">
+                    📂 เลือกไฟล์เฉลย
+                </label>
+                <input type="file" id="answer_file" name="answer_file" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar">
+                <span class="file-name" id="answer-name"></span>
+            </div>
+        </div>
+
+        <!-- รายละเอียด -->
+        <div class="form-section-title" style="margin-top: 30px;">💬 รายละเอียดเพิ่มเติม</div>
+
+        <div class="form-group">
+            <label for="description">คำอธิบาย (ทางเลือก)</label>
+            <textarea id="description" name="description" placeholder="ตัวอย่าง: ข้อสอบระดับช่วงชั้นที่ 3 ปีการศึกษา 2566 สอบวันที่..."></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">✅ อัปโหลดข้อสอบ</button>
+    </form>
+</div>
+
+<script>
+    // Display file names
+    document.getElementById('file').addEventListener('change', function(e) {
+        const fileName = e.target.files[0] ? e.target.files[0].name : 'ทำการเลือกไฟล์';
+        document.getElementById('file-name').textContent = '📄 ' + fileName;
+    });
+
+    document.getElementById('answer_file').addEventListener('change', function(e) {
+        const fileName = e.target.files[0] ? e.target.files[0].name : '';
+        document.getElementById('answer-name').textContent = fileName ? '📄 ' + fileName : '';
+    });
+</script>
+{% endblock %}

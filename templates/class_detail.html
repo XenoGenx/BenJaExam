@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}{{ class_type.name }} - BenJaMockExam{% endblock %}
+
+{% block content %}
+    <div class="card" style="background: linear-gradient(135deg, #065C3D10, #C8002E10); border-left: 5px solid #065C3D; border-top: none; margin-bottom: 30px;">
+        <h2 style="color: #065C3D; display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+            {% if class_type.name == 'ห้องพิเศษ' %}
+                ⭐ {{ class_type.name }}
+            {% else %}
+                📚 {{ class_type.name }}
+            {% endif %}
+        </h2>
+        <p>{{ class_type.description }}</p>
+    </div>
+    
+    {% if class_type.name == 'ห้องพิเศษ' %}
+        <div class="card">
+            <h3 style="color: #065C3D;">📌 โปรแกรมที่มี</h3>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-top: 15px;">
+                {% for program in programs %}
+                    <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #065C3D15, #C8002E15); border-radius: 4px; border: 2px solid #065C3D;">
+                        <strong style="color: #065C3D;">{{ program.name }}</strong>
+                        <p style="font-size: 12px; color: #666; margin-top: 5px;">{{ program.description }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="card">
+        <h3 style="color: #065C3D;">📅 ข้อสอบตามปี</h3>
+        
+        {% if years %}
+            <div style="margin-bottom: 20px;">
+                {% for year in years %}
+                    <a href="#year-{{ year }}" class="btn btn-secondary" style="margin: 5px;">{{ year }}</a>
+                {% endfor %}
+            </div>
+            
+            {% for year in years %}
+                {% set year_exams = exams|selectattr('year', 'equalto', year)|list %}
+                {% if year_exams %}
+                    <div style="margin-bottom: 30px;" id="year-{{ year }}">
+                        <h3 style="border-bottom: 3px solid #C8002E; padding-bottom: 10px; color: #065C3D;">📚 ปี {{ year }}</h3>
+                        
+                        <div style="margin-top: 20px;">
+                            {% for exam in year_exams %}
+                                <div class="card exam-item" style="margin-bottom: 15px;">
+                                    <h4 style="color: #333; margin-bottom: 8px;">
+                                        <a href="{{ url_for('exam_detail', exam_id=exam.id) }}" style="color: #667eea; text-decoration: none;">
+                                            {{ exam.title }}
+                                        </a>
+                                    </h4>
+                                    {% if exam.program %}
+                                        <span class="badge badge-primary">{{ exam.program.name }}</span>
+                                    {% endif %}
+                                    <p style="color: #666; margin-top: 8px;">{{ exam.description }}</p>
+                                    <div class="meta">
+                                        📤 อัปโหลดเมื่อ: {{ exam.upload_date.strftime('%d/%m/%Y %H:%M') }}
+                                    </div>
+                                    <div style="margin-top: 10px;">
+                                        <a href="{{ url_for('exam_detail', exam_id=exam.id) }}" class="btn">ดูรายละเอียด</a>
+                                        <a href="{{ url_for('download_exam', exam_id=exam.id) }}" class="btn btn-success">⬇️ ข้อสอบ</a>
+                                        {% if exam.answer_filepath %}
+                                            <a href="{{ url_for('download_answer', exam_id=exam.id) }}" class="btn btn-success">✏️ เฉลย</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p style="color: #999; text-align: center; padding: 40px;">ยังไม่มีข้อสอบในปัจจุบัน</p>
+            {% if session.get('is_admin') %}
+                <div style="text-align: center;">
+                    <a href="{{ url_for('upload_exam') }}" class="btn btn-success">+ เพิ่มข้อสอบแรก</a>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

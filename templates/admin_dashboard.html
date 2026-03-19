@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+
+{% block title %}แดชบอร์ดแอดมิน - BenJaMockExam{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-header {
+        background: linear-gradient(135deg, #C8002E 0%, #a00023 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 6px 20px rgba(200, 0, 46, 0.2);
+    }
+
+    .dashboard-header h1 {
+        font-size: 42px;
+        margin-bottom: 10px;
+        font-weight: 900;
+    }
+
+    .dashboard-header p {
+        font-size: 16px;
+        opacity: 0.95;
+    }
+
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        border-top: 5px solid #C8002E;
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+
+    .stat-number {
+        font-size: 36px;
+        font-weight: 900;
+        color: #C8002E;
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        color: #888;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .exams-section h2,
+    .actions-section h2 {
+        font-size: 28px;
+        color: #065C3D;
+        margin-bottom: 20px;
+        font-weight: 800;
+        border-bottom: 3px solid #C8002E;
+        padding-bottom: 10px;
+    }
+
+    .actions-section {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        margin-bottom: 40px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 24px;
+        background: linear-gradient(90deg, #065C3D 0%, #0a7a52 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(6, 92, 61, 0.25);
+        border: none;
+        cursor: pointer;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(6, 92, 61, 0.35);
+    }
+
+    .action-btn.danger {
+        background: linear-gradient(90deg, #C8002E 0%, #a00023 100%);
+        box-shadow: 0 4px 12px rgba(200, 0, 46, 0.25);
+    }
+
+    .action-btn.danger:hover {
+        box-shadow: 0 6px 20px rgba(200, 0, 46, 0.35);
+    }
+
+    .exams-table-container {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        margin-bottom: 40px;
+    }
+
+    .exams-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .exams-table thead {
+        background: linear-gradient(90deg, #065C3D 0%, #0a7a52 100%);
+        color: white;
+    }
+
+    .exams-table th {
+        padding: 18px;
+        text-align: left;
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    .exams-table td {
+        padding: 16px 18px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .exams-table tbody tr:hover {
+        background: #f8f9fa;
+    }
+
+    .exam-title {
+        font-weight: 700;
+        color: #065C3D;
+    }
+
+    .exam-year {
+        background: #E8F5E9;
+        color: #027840;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .delete-btn {
+        padding: 8px 12px;
+        background: linear-gradient(90deg, #C8002E 0%, #a00023 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(200, 0, 46, 0.25);
+    }
+
+    .delete-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(200, 0, 46, 0.35);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 40px;
+        color: #888;
+    }
+
+    .empty-state-icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+
+    .empty-state h3 {
+        font-size: 24px;
+        color: #065C3D;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+        .exams-table {
+            font-size: 13px;
+        }
+
+        .exams-table th,
+        .exams-table td {
+            padding: 12px;
+        }
+
+        .stats-container {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .action-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>⚙️ แดชบอร์ดแอดมิน</h1>
+    <p>จัดการข้อสอบและสถิติของระบบอย่างมีประสิทธิภาพ</p>
+</div>
+
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-number">{{ total_exams }}</div>
+        <div class="stat-label">ข้อสอบทั้งหมด</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">💬</div>
+        <div class="stat-number">{{ total_comments }}</div>
+        <div class="stat-label">ความเห็นและคำวิจารณ์</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-number">{{ now.year }}</div>
+        <div class="stat-label">ปีการศึกษาปัจจุบัน</div>
+    </div>
+</div>
+
+<div class="actions-section">
+    <h2>🛠️ การจัดการ</h2>
+    <div class="action-buttons">
+        <a href="{{ url_for('upload_exam') }}" class="action-btn">
+            📤 อัปโหลดข้อสอบใหม่
+        </a>
+        <a href="{{ url_for('index') }}" class="action-btn">
+            👁️ ดูเว็บไซต์
+        </a>
+    </div>
+</div>
+
+<div class="exams-section">
+    <h2>📋 รายการข้อสอบทั้งหมด</h2>
+
+    {% if exams %}
+        <div class="exams-table-container">
+            <table class="exams-table">
+                <thead>
+                    <tr>
+                        <th>ชื่อข้อสอบ</th>
+                        <th>ปี</th>
+                        <th>ห้องเรียน</th>
+                        <th>โปรแกรม</th>
+                        <th>ดาวน์โหลด</th>
+                        <th>ลบ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exam in exams %}
+                        <tr>
+                            <td>
+                                <div class="exam-title">{{ exam.title }}</div>
+                            </td>
+                            <td><span class="exam-year">{{ exam.year }}</span></td>
+                            <td>{{ exam.class_type.name if exam.class_type else 'ไม่ระบุ' }}</td>
+                            <td>{{ exam.program.name if exam.program else '-' }}</td>
+                            <td>
+                                <a href="{{ url_for('download_exam', exam_id=exam.id) }}" class="action-btn" style="padding: 6px 10px; font-size: 12px; margin: 0;">
+                                    ⬇️
+                                </a>
+                                {% if exam.answer_filepath %}
+                                    <a href="{{ url_for('download_answer', exam_id=exam.id) }}" class="action-btn" style="padding: 6px 10px; font-size: 12px; margin: 0; background: linear-gradient(90deg, #FFB300 0%, #FF9800 100%);">
+                                        ⬇️
+                                    </a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form method="POST" action="{{ url_for('delete_exam', exam_id=exam.id) }}" style="display: inline;">
+                                    <button type="submit" class="delete-btn" onclick="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อสอบนี้?');">🗑️ ลบ</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <h3>ไม่มีข้อสอบในระบบ</h3>
+            <p>เริ่มต้นโดยการ<a href="{{ url_for('upload_exam') }}" style="color: #C8002E; font-weight: 600; text-decoration: none;"> อัปโหลดข้อสอบใหม่</a></p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

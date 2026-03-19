@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}ไม่พบหน้า - BenJaMockExam{% endblock %}
+
+{% block content %}
+    <div class="card" style="text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #ff6b6b10, #C8002E20);">
+        <h2 style="font-size: 48px; color: #C8002E;">404</h2>
+        <h3>ไม่พบหน้าที่ค้นหา</h3>
+        <p style="color: #666; margin-top: 10px;">ดูเหมือนว่าหน้าที่คุณกำลังค้นหาไม่มีอยู่</p>
+        
+        <div style="margin-top: 30px;">
+            <a href="{{ url_for('index') }}" class="btn">← กลับไปหน้าแรก</a>
+        </div>
+    </div>
+{% endblock %}

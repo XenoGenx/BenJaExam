@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}ผลการค้นหา - BenJaMockExam{% endblock %}
+
+{% block content %}
+    <h2 style="color: #065C3D; margin-bottom: 25px;">📋 ผลการค้นหา</h2>
+    
+    {% if exams %}
+        <div style="background: white; border-radius: 8px; overflow: hidden;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>📌 ชื่อข้อสอบ</th>
+                        <th>📅 ปี</th>
+                        <th>🏫 ประเภท</th>
+                        <th>⭐ โปรแกรม</th>
+                        <th>📤 อัปโหลด</th>
+                        <th>⚙️ การดำเนิน</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exam in exams %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('exam_detail', exam_id=exam.id) }}" style="color: #667eea; text-decoration: none;">
+                                    {{ exam.title }}
+                                </a>
+                            </td>
+                            <td>{{ exam.year }}</td>
+                            <td>{{ exam.class_type.name }}</td>
+                            <td>
+                                {% if exam.program %}
+                                    <span class="badge badge-primary">{{ exam.program.name }}</span>
+                                {% else %}
+                                    <span style="color: #999;">-</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ exam.upload_date.strftime('%d/%m/%Y') }}</td>
+                            <td>
+                                <a href="{{ url_for('exam_detail', exam_id=exam.id) }}" class="btn" style="padding: 5px 10px; font-size: 12px;">ดู</a>
+                                <a href="{{ url_for('download_exam', exam_id=exam.id) }}" class="btn btn-success" style="padding: 5px 10px; font-size: 12px;">ข้อสอบ</a>
+                                {% if exam.answer_filepath %}
+                                    <a href="{{ url_for('download_answer', exam_id=exam.id) }}" class="btn btn-success" style="padding: 5px 10px; font-size: 12px;">เฉลย</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="card" style="text-align: center; padding: 40px;">
+            <p style="color: #999; font-size: 16px;">ไม่พบข้อสอบที่ตรงกับเกณฑ์ของคุณ</p>
+            <a href="{{ url_for('index') }}" class="btn" style="margin-top: 20px;">← กลับไปหน้าแรก</a>
+        </div>
+    {% endif %}
+{% endblock %}

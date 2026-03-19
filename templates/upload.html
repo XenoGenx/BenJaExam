@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}อัปโหลดข้อสอบ - BenJaMockExam{% endblock %}
+
+{% block content %}
+    <div class="card" style="background: linear-gradient(135deg, #065C3D10, #C8002E10); border-left: 5px solid #065C3D; margin-bottom: 35px; border-top: none;">
+        <h2 style="color: #C8002E; display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+            <span style="font-size: 32px;">📤</span> อัปโหลดข้อสอบใหม่
+        </h2>
+        <p style="color: #555; font-size: 15px; margin-top: 8px;">ช่วยให้นักเรียนคนอื่นได้เรียนรู้โดยแชร์ข้อสอบและเฉลยของคุณ</p>
+    </div>
+    
+    <form method="POST" enctype="multipart/form-data" class="card" style="max-width: 650px; border-top: 5px solid #065C3D;">
+        <div class="form-group">
+            <label for="title">📌 ชื่อข้อสอบ <span style="color: #C8002E;">*</span></label>
+            <input type="text" id="title" name="title" required placeholder="เช่น ข้อสอบวิชาคณิตศาสตร์ ปี 2567" maxlength="200">
+            <small style="color: #888; font-size: 13px; margin-top: 4px; display: block;">ชื่อที่อธิบายข้อสอบได้ชัดเจน</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="year">📅 ปีการศึกษา <span style="color: #C8002E;">*</span></label>
+            <select id="year" name="year" required>
+                <option value="">-- เลือกปี --</option>
+                {% for y in years|reverse %}
+                    <option value="{{ y }}">{{ y }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="class_type_id">🏫 ประเภทห้องเรียน <span style="color: #C8002E;">*</span></label>
+            <select id="class_type_id" name="class_type_id" required>
+                <option value="">-- เลือกประเภทห้อง --</option>
+                {% for class_type in class_types %}
+                    <option value="{{ class_type.id }}">{{ class_type.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group" id="program-group" style="display: none;">
+            <label for="program_id">⭐ โปรแกรม (สำหรับห้องพิเศษ)</label>
+            <select id="program_id" name="program_id">
+                <option value="">-- เลือกโปรแกรม (ไม่บังคับ) --</option>
+                {% for program in programs %}
+                    <option value="{{ program.id }}">{{ program.name }} - {{ program.description }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">📝 รายละเอียดเพิ่มเติม</label>
+            <textarea id="description" name="description" placeholder="ใส่ข้อมูลเพิ่มเติมเกี่ยวกับข้อสอบ เช่น วิชา ระดับความยาก เป็นต้น" maxlength="2000"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="file">📁 เลือกไฟล์ข้อสอบ <span style="color: red;">*</span></label>
+            <input type="file" id="file" name="file" required accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar">
+            <small style="color: #666;">ประเภทไฟล์ที่ยอมรับ: PDF, DOC, DOCX, XLS, XLSX, TXT, ZIP, RAR (สูงสุด 50MB)</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="answer_file">📑 เลือกไฟล์เฉลย (ไม่บังคับ)</label>
+            <input type="file" id="answer_file" name="answer_file" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.zip,.rar">
+            <small style="color: #666;">อัปโหลดไฟล์เฉลยข้อสอบ (ไม่บังคับ) | สูงสุด 50MB</small>
+        </div>
+        
+        <div style="margin-top: 30px; display: flex; gap: 12px;">
+            <button type="submit" class="btn btn-success" style="flex: 1;">✅ อัปโหลดข้อสอบ</button>
+            <a href="/" class="btn btn-secondary" style="flex: 0.5;">❌ ยกเลิก</a>
+        </div>
+    </form>
+    
+    <div class="card" style="max-width: 650px; background: linear-gradient(135deg, #f0f8f5 0%, #ffffff 100%); border-left: 5px solid #065C3D; border-top: none; margin-top: 25px;">
+        <h4 style="color: #065C3D; display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+            <span style="font-size: 20px;">📋</span> คำแนะนำในการอัปโหลด
+        </h4>
+        <ul style="margin-left: 20px; color: #555; line-height: 2; font-size: 14px;">
+            <li>✔️ ตรวจสอบให้แน่ใจว่าไฟล์ที่อัปโหลดเป็นข้อสอบจริง</li>
+            <li>✔️ ใช้ชื่อไฟล์ที่ชัดเจนและเป็นความจริง</li>
+            <li>✔️ ระบุวิชาและปีการศึกษาให้ถูกต้อง</li>
+            <li>✔️ เฉลยจะช่วยให้นักเรียนประเมินความเข้าใจ</li>
+            <li>✔️ ไม่ควรเพิ่มข้อมูลส่วนบุคคลหรือข้อมูลที่ไม่เกี่ยวข้อง</li>
+        </ul>
+    </div>
+    
+    <script>
+        document.getElementById('class_type_id').addEventListener('change', function() {
+            const programGroup = document.getElementById('program-group');
+            const selectedOption = this.options[this.selectedIndex];
+            
+            // Show program selection only for "ห้องพิเศษ"
+            if (selectedOption && selectedOption.text.includes('ห้องพิเศษ')) {
+                programGroup.style.display = 'block';
+            } else {
+                programGroup.style.display = 'none';
+                document.getElementById('program_id').value = '';
+            }
+        });
+    </script>
+{% endblock %}
