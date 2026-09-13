@@ -76,16 +76,19 @@ def inject_user():
 @app.route('/')
 def index():
     """Home page"""
-    if 'user_name' not in session:
-        return redirect(url_for('login'))
-    
     # If admin, redirect to admin dashboard
     if session.get('is_admin'):
         return redirect(url_for('admin_dashboard'))
     
-    # Regular user: show class selection
     class_types = ClassType.query.all()
-    return render_template('index.html', class_types=class_types)
+    recent_exams = Exam.query.order_by(Exam.upload_date.desc()).limit(3).all()
+    return render_template(
+        'index.html',
+        class_types=class_types,
+        recent_exams=recent_exams,
+        exam_count=Exam.query.count(),
+        program_count=Program.query.count()
+    )
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

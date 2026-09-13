@@ -536,15 +536,14 @@
                 <li><a href="/admin/dashboard">⚙️ แดชบอร์ดแอดมิน</a></li>
                 <li><a href="/upload">📤 อัปโหลดข้อสอบ</a></li>
             {% endif %}
-            <li><a href="/">📚 ดูข้อสอบ</a></li>
+            <li><a href="{% if session.get('user_name') %}{{ url_for('index') }}#categories{% else %}{{ url_for('login') }}{% endif %}">📚 ดูข้อสอบ</a></li>
             <li style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
-                <span style="color: white; font-weight: 500;">
-                    👤 {{ session.get('user_name', 'ผู้ใช้') }}
-                    {% if session.get('is_admin') %}
-                        <span style="background: #FFD700; color: #065C3D; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 700;">ADMIN</span>
-                    {% endif %}
-                </span>
-                <a href="/logout" style="background-color: #C8002E;">🚪 ออกจากระบบ</a>
+                {% if session.get('user_name') %}
+                    <span style="color: white; font-weight: 500;">👤 {{ session.get('user_name') }}</span>
+                    <a href="/logout" style="background-color: #C8002E;">🚪 ออกจากระบบ</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" style="background-color: #C8002E;">เข้าสู่ระบบ</a>
+                {% endif %}
             </li>
         </ul>
     </nav>

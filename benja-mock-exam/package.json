@@ -1,0 +1,24 @@
+{
+  "name": "benja-mock-exam",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Benja Mock Exam - สนามซ้อมก่อนสนามจริง",
+  "main": "server/server.js",
+  "scripts": {
+    "dev": "node --watch server/server.js",
+    "start": "node server/server.js",
+    "seed": "node server/seed.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "better-sqlite3": "^13.0.3",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0",
+    "multer": "^2.3.0"
+  }
+}

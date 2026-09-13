@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+node_modules/
+npm-debug.log*
+benja-mock-exam/uploads/exams/*
+!benja-mock-exam/uploads/exams/.gitkeep

@@ -1,54 +1,88 @@
 {% extends "base.html" %}
 
-{% block title %}หน้าแรก - BenJaMockExam{% endblock %}
+{% block title %}BenJaMockExam | คลังข้อสอบเข้าเบ็ญจะมะมหาราช{% endblock %}
+
+{% block extra_css %}
+<style>
+    .home-page { max-width: 1240px; margin: -10px auto 0; }
+    .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; padding: 58px 0 74px; }
+    .eyebrow { color: #c8002e; font-size: 13px; font-weight: 800; letter-spacing: 1.7px; text-transform: uppercase; margin-bottom: 18px; }
+    .hero h2 { color: #143c32; font-size: clamp(38px, 5vw, 68px); line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 22px; max-width: 650px; }
+    .hero h2 span { color: #c8002e; }
+    .hero-copy { color: #5d6b66; font-size: 17px; line-height: 1.85; max-width: 560px; margin-bottom: 28px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .hero-actions .btn { margin: 0; }
+    .text-link { color: #143c32; font-weight: 800; text-decoration: none; padding: 12px 14px; }
+    .hero-art { min-height: 380px; border-radius: 28px; background: #143c32; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(20, 60, 50, .22); }
+    .hero-art::before { content: ''; position: absolute; width: 420px; height: 420px; border-radius: 50%; background: #c8002e; top: -170px; right: -140px; opacity: .92; }
+    .hero-art::after { content: ''; position: absolute; width: 290px; height: 290px; border: 1px solid rgba(255,255,255,.22); border-radius: 50%; left: -100px; bottom: -120px; box-shadow: 0 0 0 24px rgba(255,255,255,.04), 0 0 0 48px rgba(255,255,255,.03); }
+    .orbit { position: absolute; inset: 52px; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; transform: rotate(-28deg) scaleY(.56); }
+    .orbit::before, .orbit::after { content: ''; position: absolute; width: 13px; height: 13px; border-radius: 50%; background: #ffd166; box-shadow: 0 0 0 8px rgba(255,209,102,.12); }
+    .orbit::before { top: 12%; left: 18%; } .orbit::after { right: 12%; bottom: 16%; background: #b8e0d2; }
+    .art-note { position: absolute; z-index: 2; left: 36px; bottom: 34px; color: white; }
+    .art-note strong { display: block; font-size: 31px; line-height: 1.1; margin-bottom: 8px; } .art-note small { color: #b8e0d2; font-size: 14px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #d9e3de; border: 1px solid #d9e3de; border-radius: 14px; overflow: hidden; margin-bottom: 70px; }
+    .stat { background: #fff; padding: 22px 26px; } .stat strong { display: block; color: #143c32; font-size: 28px; margin-bottom: 5px; } .stat span { color: #72827b; font-size: 13px; }
+    .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 22px; }
+    .section-heading h3 { color: #143c32; font-size: 29px; margin: 0; } .section-heading p { color: #718078; margin: 0; }
+    .section-heading a { color: #c8002e; font-weight: 800; text-decoration: none; white-space: nowrap; }
+    .category-grid, .exam-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .category-card { display: flex; justify-content: space-between; align-items: center; padding: 25px; border-radius: 14px; background: #fff; border: 1px solid #e0e8e4; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+    .category-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(20,60,50,.12); } .category-card h4 { color: #143c32; font-size: 22px; margin: 0 0 7px; } .category-card p { color: #78877f; margin: 0; font-size: 14px; } .category-icon { font-size: 35px; }
+    .recent { margin-top: 72px; } .exam-card { background: #fff; border: 1px solid #e0e8e4; border-radius: 14px; padding: 22px; text-decoration: none; } .exam-card small { color: #c8002e; font-weight: 800; } .exam-card h4 { color: #143c32; margin: 11px 0 10px; font-size: 18px; } .exam-card p { color: #78877f; font-size: 14px; margin: 0; line-height: 1.6; }
+    .promise { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 72px 0 20px; padding: 38px; border-radius: 20px; background: #e8f1ec; } .promise h3 { color: #143c32; font-size: 29px; margin: 0 0 12px; } .promise p { color: #60726a; line-height: 1.8; margin: 0; } .promise-list { display: grid; gap: 12px; } .promise-list div { color: #143c32; font-weight: 700; } .promise-list span { color: #c8002e; margin-right: 10px; }
+    @media (max-width: 800px) { .hero { grid-template-columns: 1fr; padding-top: 35px; } .hero-art { min-height: 290px; } .stats { grid-template-columns: 1fr; } .category-grid, .exam-grid, .promise { grid-template-columns: 1fr; } .section-heading { align-items: start; flex-direction: column; } }
+</style>
+{% endblock %}
 
 {% block content %}
-    <h2 style="color: #d0c7c9; text-align: center; margin-bottom: 10px;">🎓 ยินดีต้อนรับสู่ BenJaMockExam</h2>
-    <p style="color: #050f0b; text-align: center; margin-bottom: 35px; font-size: 16px; font-weight: 500;">เลือกประเภทห้องเรียนของคุณเพื่อเริ่มสำรวจข้อสอบล่าสุด</p>
-    
-    <div class="grid">
-        {% for class_type in class_types %}
-            <a href="{{ url_for('select_class', class_id=class_type.id) }}" style="text-decoration: none; display: block;">
-                <div class="card class-card" style="text-align: center; border-top: 5px solid {% if class_type.name == 'ห้องพิเศษ' %}#C8002E{% else %}#065C3D{% endif %};">
-                    <div style="font-size: 56px; margin-bottom: 15px;">
-                        {% if class_type.name == 'ห้องพิเศษ' %}
-                            ⭐
-                        {% else %}
-                            📚
-                        {% endif %}
-                    </div>
-                    <h3 style="color: {% if class_type.name == 'ห้องเรียนพิเศษ' %}#C8002E{% else %}#065C3D{% endif %}; margin-bottom: 12px; font-size: 24px;">{{ class_type.name }}</h3>
-                    <p style="color: #666; font-size: 15px; margin-bottom: 15px; line-height: 1.6;">{{ class_type.description }}</p>
-                    <div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #f0f0f0;">
-                        {% if class_type.name == 'ห้องพิเศษ' %}
-                            <p style="color: #C8002E; font-size: 13px; font-weight: 600; margin-bottom: 12px;">📌 โปรแกรม: EEP, SMTE, YSP, AP, EP</p>
-                        {% else %}
-                            <p style="color: #065C3D; font-size: 13px; font-weight: 600; margin-bottom: 12px;">📖 สำหรับห้องเรียนทั่วไป</p>
-                        {% endif %}
-                        <span class="btn" style="display: inline-block; margin-top: 10px; margin: 0;">เข้าดู →</span>
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
-    </div>
-    
-    <div class="card" style="margin-top: 50px; background: linear-gradient(135deg, #065C3D10, #C8002E10); border-left: 5px solid #065C3D; border-top: none;">
-        <h3 style="color: #ebebeb; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 24px;">📋</span> เกี่ยวกับเว็บไซต์นี้
-        </h3>
-        <p style="color: #a8a3a3; line-height: 1.8; margin-bottom: 15px;">
-            เว็บไซต์นี้เป็นแหล่งรวมข้อสอบจําลองเข้าโรงเรียนเบ็ญจะมะมหาราชจากหลายปี 
-            เพื่อช่วยให้นักเรียนสามารถค้นหา ศึกษา และแลกเปลี่ยนประสบการณ์การเรียนรู้ได้อย่างมีประสิทธิภาพครับ/ค่ะ
-        </p>
-        <div style="background: white; padding: 16px; border-radius: 8px; margin-top: 15px;">
-            <p style="color: #065C3D; font-weight: 600; margin-bottom: 12px;">🔥 จุดประสงค์หลัก:</p>
-            <ul style="margin-left: 20px; color: #555; line-height: 2;">
-                <li>📥 ใช้เพื่อฝึกฝนตนเอง</li>
-                <li>📤 ฝึกฝนและทําข้อสอบจําลอง</li>
-                <li>💬 แสดงความคิดเห็นและแนวทางการแก้ปัญหา</li>
-                <li>⭐ เลือกโปรแกรม (EEP, SMTE, YSP, AP, EP)</li>
-                <li>📓 ดาวน์โหลดข้อสอบและเฉลยอย่างไม่จำกัด</li>
-            </ul>
+<main class="home-page">
+    <section class="hero">
+        <div>
+            <div class="eyebrow">BenJaMockExam / เรียนให้พร้อมก่อนสนามจริง</div>
+            <h2>ข้อสอบดีๆ ทำให้<br><span>ความมั่นใจเริ่มต้นได้</span></h2>
+            <p class="hero-copy">คลังข้อสอบจำลองเข้าโรงเรียนเบ็ญจะมะมหาราช รวมแนวข้อสอบหลายปี พร้อมเฉลยและพื้นที่แลกเปลี่ยนความเข้าใจ เพื่อให้การเตรียมตัวของคุณเป็นระบบมากขึ้น</p>
+            <div class="hero-actions">
+                {% if session.get('user_name') %}
+                    <a class="btn" href="#categories">เลือกห้องเรียน →</a>
+                {% else %}
+                    <a class="btn" href="{{ url_for('login') }}">เริ่มทำข้อสอบ →</a>
+                {% endif %}
+                <a class="text-link" href="#recent">ดูข้อสอบล่าสุด</a>
+            </div>
         </div>
+        <div class="hero-art" aria-label="ภาพประกอบการเรียนรู้">
+            <div class="orbit"></div>
+            <div class="art-note"><strong>เรียนรู้<br>อย่างมีทิศทาง</strong><small>Practice · Review · Improve</small></div>
+        </div>
+    </section>
+
+    <div class="stats">
+        <div class="stat"><strong>{{ exam_count }}</strong><span>ชุดข้อสอบพร้อมฝึกฝน</span></div>
+        <div class="stat"><strong>{{ class_types|length }}</strong><span>ประเภทห้องเรียน</span></div>
+        <div class="stat"><strong>{{ program_count }}</strong><span>โปรแกรมการเรียนรู้</span></div>
     </div>
+
+    <section id="categories">
+        <div class="section-heading"><div><h3>เลือกเส้นทางของคุณ</h3><p>เริ่มจากห้องเรียนที่ตรงกับเป้าหมาย</p></div><a href="#categories">ดูทั้งหมด</a></div>
+        <div class="category-grid">
+            {% for class_type in class_types %}
+            <a class="category-card" href="{% if session.get('user_name') %}{{ url_for('select_class', class_id=class_type.id) }}{% else %}{{ url_for('login') }}{% endif %}">
+                <div><h4>{{ class_type.name }}</h4><p>{{ class_type.description }}</p></div><span class="category-icon">{% if class_type.name == 'ห้องพิเศษ' %}✦{% else %}▣{% endif %}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="recent" id="recent">
+        <div class="section-heading"><div><h3>ข้อสอบล่าสุด</h3><p>ฝึกวันนี้ เพื่อความพร้อมในวันสอบ</p></div></div>
+        {% if recent_exams %}
+        <div class="exam-grid">
+            {% for exam in recent_exams %}<a class="exam-card" href="{% if session.get('user_name') %}{{ url_for('exam_detail', exam_id=exam.id) }}{% else %}{{ url_for('login') }}{% endif %}"><small>{{ exam.year }} · {{ exam.class_type.name }}</small><h4>{{ exam.title }}</h4><p>{{ exam.description or 'ข้อสอบจำลองสำหรับฝึกทบทวนและวัดความพร้อม' }}</p></a>{% endfor %}
+        </div>
+        {% else %}<div class="exam-card"><h4>กำลังเตรียมข้อสอบชุดแรก</h4><p>แอดมินจะอัปโหลดข้อสอบและเฉลยให้คุณได้ฝึกที่นี่เร็วๆ นี้</p></div>{% endif %}
+    </section>
+
+    <section class="promise"><div><h3>สนามจริงเริ่มจากการฝึกที่ดี</h3><p>BenJaMockExam ช่วยให้คุณเห็นภาพการสอบก่อนลงสนามจริง ค้นหาจุดที่ต้องพัฒนา และกลับมาทบทวนได้ทุกเมื่อ</p></div><div class="promise-list"><div><span>01</span>ฝึกทำข้อสอบตามปีและประเภทห้อง</div><div><span>02</span>อ่านคำอธิบายและแลกเปลี่ยนความคิดเห็น</div><div><span>03</span>ดาวน์โหลดข้อสอบและเฉลยไว้ทบทวน</div></div></section>
+</main>
 {% endblock %}
